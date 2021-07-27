@@ -10,7 +10,6 @@ function Dashboard() {
     useEffect(() => {
         axios.get("http://www.json-generator.com/api/json/get/cgyeGRAZiW?indent=2").then((response) => {
             filterCategories(response.data);
-            setAlbums(response.data);
         });
       }, []);
 
@@ -19,6 +18,7 @@ function Dashboard() {
             return a.indexOf(x) === i; 
         });
         setCategories(list);
+        setAlbums(categories);
       }
 
     const renderAlbums = () => {
@@ -33,7 +33,12 @@ function Dashboard() {
     }
 
     const renderCategories = () => {
-        return categories.map(category => <div className="p-2" onClick={() => selectCategory(category)}>{category}</div>);
+        return categories.map(category => {
+            if (category === selectedCategory) {
+                return <div className="p-2 text-danger" onClick={() => selectCategory(category)}>{category}</div>
+            }
+            return <div className="p-2" onClick={() => selectCategory(category)}>{category}</div>
+        });
     }
     
     return(<Container fluid>
